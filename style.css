@@ -1,0 +1,43 @@
+body{
+  width: 1920px;
+  height: 1080px;
+}
+
+.player-box{
+  width: 300px;
+  height: 100px;
+}
+
+.active-box{
+  width: 280px;
+  height: 200px;
+}
+
+.timer-box{
+  width: 300px;
+  height: 125px;
+}
+
+.map-box{
+  width: 380px;
+  height: 300px;
+  position: relative;
+}
+
+.player{
+  position: absolute;
+  width: 10px;
+  height: 10px;
+}
+
+.bg-blue-team{
+  background-color: #5E90B5; 
+}
+
+.bg-orange-team{
+  background-color: #F4924A; 
+}
+
+.scorebox {
+   background-image: url('graphics/ingame-bo3.png');
+}
