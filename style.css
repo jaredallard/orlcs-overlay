@@ -207,7 +207,7 @@ body {
 /* Active Player */
 .active-player {
   position: fixed;
-  bottom: 30px;
+  bottom: 75px;
 
   width: 100%;
 
