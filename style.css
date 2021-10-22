@@ -7,7 +7,7 @@ body {
 
 #main-ui {
   position: fixed;
-  bottom:200px;
+  bottom: 200px;
 }
 
 
@@ -98,8 +98,8 @@ body {
 .scorebox {
   margin-left: 25px;
   margin-top: 25px; 
-  width: 800px;
-  height: auto;
+  width: 1000px;
+  height: 100px;
 }
 
 .scorebox .blue-team {
@@ -111,11 +111,11 @@ body {
 }
 
 .scorebox .blue-team, .scorebox .orange-team {
-  width: 300px;
+  width: 391.5px;
 }
 
 .scorebox .score {
-  width: 100px;
+  width: 150px;
   color: black;
   background-color: white;
   text-align: center;
@@ -128,17 +128,23 @@ body {
   text-align: center;
 }
 
+.scorebox .logo {
+  width: 81px;
+  height: auto;
+}
+
+
 .scorebox .scorebox-main {
   background-color: grey;
-  height: auto;
-
+  height: 81px;
   display: flex;                  /* establish flex container */
   justify-content: space-between; /* switched from default (flex-start, see below) */
 }
 
 .scorebox .scorebox-main .timer,
 .scorebox .scorebox-main .blue-team, 
-.scorebox .scorebox-main .orange-team {
+.scorebox .scorebox-main .orange-team,
+.scorebox .scorebox-main .score {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -154,4 +160,8 @@ body {
   color: white;
 
   width: 100%;
+}
+
+.scorebox .meta-info .info-title {
+  margin-left: 10px;
 }
