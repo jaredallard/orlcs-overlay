@@ -8,6 +8,16 @@ Please follow me on YouTube and Twitch
 const ws = new WebSocket('ws://192.168.1.48:49122');
 
 
+window.onload = () => {
+  const urlParams = new URLSearchParams(window.location.search);
+
+  const gameNumber = urlParams.get('gameNum') || 1;
+  const bestOfNumber = urlParams.get('bestOf') || 3;
+
+  $('#tournament-game-nunmber').text(gameNumber)
+  $('#tournament-best-of').text(bestOfNumber)
+}
+
 function orangeResetAll() {
   $('#orange-team-name').text('')
   $("#orange-player-1, #orange-player-2, #orange-player-1").addClass('d-none')
@@ -58,98 +68,85 @@ function fmtMSS(s) {   // accepts seconds as Number or String. Returns m:ss
 }
 
 ws.onmessage = (e) => {
+  const jEvent = JSON.parse(event.data);
 
-  var jEvent = JSON.parse(event.data);
+  if (jEvent.data.event == "gamestate") {
+    const teamData = jEvent.data.game.teams
 
-
-  //console.log(jEvent.data)
-
-
-  if (jEvent.event == "game:update_state" || jEvent.data.event == "gamestate") {
-
-    //gonna be used in a few spots
-    var teamData = jEvent.data.game.teams
-
-    //console.log(jEvent.data.game.hasWinner)
-    if (jEvent.data.game.hasWinner == true) { // || jEvent.data.game.isReplay == true will be added on prod
+    if (jEvent.data.game.hasWinner == true) {
       $('#main-ui').addClass('invisible');
-      //console.log(jEvent.data.game.isReplay)
+      ws.close()
+      return
+    }
 
+    $('#main-ui').removeClass('invisible');
+
+    const gameTime = jEvent.data.game.time_seconds
+    $('#timer').text(fmtMSS(gameTime))
+
+    const blueName = _.get(teamData, [0, 'name'])
+    const orangeName = _.get(teamData, [1, 'name'])
+
+    if (blueName.length > 1 && orangeName.length > 1) {
+      $('#blue-team-name').text(blueName)
+      $('#orange-team-name').text(orangeName)
+    }
+
+
+    //score
+    var blueScore = _.get(teamData, [0, 'score'])
+    var orangeScore = _.get(teamData, [1, 'score'])
+
+    $('#blue-score').text(blueScore)
+    $('#orange-score').text(orangeScore)
+
+    //overtime logic
+    if (jEvent.data.game.isOT == true) {
+      $('#overtime-text').removeClass('d-none')
     } else {
+      $('#overtime-text').addClass('d-none')
+    }
 
-      //show the ui
-      $('#main-ui').removeClass('invisible');
+    const playerList = jEvent.data.players;
+    const team0 = _.filter(playerList, {
+      'team': 0
+    })
+    const team1 = _.filter(playerList, {
+      'team': 1
+    })
 
-      //time
-      var gameTime = jEvent.data.game.time_seconds
-      $('#timer').text(fmtMSS(gameTime))
 
-      //team names
-      var blueName = _.get(teamData, [0, 'name'])
-      var orangeName = _.get(teamData, [1, 'name'])
-
-      if (blueName.length > 1 && orangeName.length > 1) {
-        $('#blue-team-name').text(blueName)
-        $('#blue-team-name').removeClass('d-none')
-        $('#orange-team-name').text(orangeName)
-        $('#orange-team-name').removeClass('d-none')
+    for (const team of [{ color: 'blue', players: team0 }, { color: 'orange', players: team1 }]) {
+      if (team.players == undefined) {
+        team.color == 'blue' ? blueResetAll() : orangeResetAll()
+        continue
       }
 
+      for (let i = 0; i != team.players.length; i++) {
+        const teamMember = team.players[i];
+        if (teamMember != undefined) {
+          $(`#${team.color}-player-${i + 1}`).removeClass('d-none')
+          $(`#${team.color}-player-${i + 1}-name`).text(teamMember.name)
+          $(`#${team.color}-player-${i + 1}-goals`).text(teamMember.goals)
+          $(`#${team.color}-player-${i + 1}-shots`).text(teamMember.shots)
+          $(`#${team.color}-player-${i + 1}-saves`).text(teamMember.saves)
+          $(`#${team.color}-player-${i + 1}-assists`).text(teamMember.assists)
+          $(`#${team.color}-player-${i + 1}-boost`).text(teamMember.boost)
+          $(`#${team.color}-player-${i + 1}-p-bar`).width(teamMember.boost + "%")
 
-      //score
-      var blueScore = _.get(teamData, [0, 'score'])
-      var orangeScore = _.get(teamData, [1, 'score'])
-
-      $('#blue-score').text(blueScore)
-      $('#orange-score').text(orangeScore)
-
-      //overtime logic
-      if (jEvent.data.game.isOT == true) {
-        $('#overtime-text').removeClass('d-none')
-      } else {
-        $('#overtime-text').addClass('d-none')
-      }
-
-      const playerList = jEvent.data.players;
-      const team0 = _.filter(playerList, {
-        'team': 0
-      })
-      const team1 = _.filter(playerList, {
-        'team': 1
-      })
-
-
-      for (const team of [{ color: 'blue', players: team0 }, { color: 'orange', players: team1 }]) {
-        if (team.players == undefined) {
-          team.color == 'blue' ? blueResetAll() : orangeResetAll()
-          continue
-        }
-
-        for (let i = 0; i != team.players.length; i++) {
-          const teamMember = team.players[i];
-          if (teamMember != undefined) {
-            $(`#${team.color}-player-${i + 1}`).removeClass('d-none')
-            $(`#${team.color}-player-${i + 1}-name`).text(teamMember.name)
-            $(`#${team.color}-player-${i + 1}-goals`).text(teamMember.goals)
-            $(`#${team.color}-player-${i + 1}-shots`).text(teamMember.shots)
-            $(`#${team.color}-player-${i + 1}-saves`).text(teamMember.saves)
-            $(`#${team.color}-player-${i + 1}-assists`).text(teamMember.assists)
-            $(`#${team.color}-player-${i + 1}-boost`).text(teamMember.boost)
-            $(`#${team.color}-player-${i + 1}-p-bar`).width(teamMember.boost + "%")
-
-            if (teamMember.boost >= 3) {
-              $(`#${team.color}-player-${i + 1}-boost`).css("color", "white")
-            } else {
-              $(`#${team.color}-player-${i + 1}-boost`).css("color", "black")
-            }
+          if (teamMember.boost >= 3) {
+            $(`#${team.color}-player-${i + 1}-boost`).css("color", "white")
+          } else {
+            $(`#${team.color}-player-${i + 1}-boost`).css("color", "black")
           }
         }
       }
     }
+
+    return
   }
 
-  //is the match over?
-  else if (jEvent.event == "game:podium_start" || jEvent.event == "game:match_ended") {
+  if (jEvent.data.event == "podium_start" || jEvent.data.event == "match_ended") {
     console.log('match ended / podium')
     $('#main-ui').addClass('invisible');
     blueResetAll()
