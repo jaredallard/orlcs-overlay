@@ -124,6 +124,7 @@ body {
   color: black;
   background-color: white;
   text-align: center;
+  font-weight: bolder;
 }
 
 .scorebox .timer {
@@ -201,4 +202,26 @@ body {
 .scorebox .meta-info .tournament-info .tournament-name-container {
   position: absolute;
   left: 0;
+}
+
+/* Active Player */
+.active-player {
+  position: fixed;
+  bottom: 30px;
+
+  width: 100%;
+
+  /* this is what centers your element in the fixed wrapper*/
+  display: flex;
+  justify-content: center; /* aligns on vertical for column */
+  align-items: center; /* aligns on horizontal for column */
+}
+
+.active-player-info {
+  height: 35px;
+  width: 230px;
+}
+
+.active-player-info .spectating {
+  font-weight: bold;
 }

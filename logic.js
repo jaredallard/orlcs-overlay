@@ -79,6 +79,34 @@ ws.onmessage = (e) => {
       return
     }
 
+    // Update the "spectating" block
+    if (jEvent.data.game.hasTarget) {
+      const activePlayerName = jEvent.data.game.target;
+      const activePlayer = jEvent.data.players[activePlayerName];
+
+      $("#active-player-name").text(activePlayer.name)
+
+      if (activePlayer.team == 1) {
+        $(".active-player-info").removeClass('bg-blue-team');
+        $(".active-player-info").addClass('bg-orange-team');
+      } else {
+        $(".active-player-info").removeClass('bg-orange-team');
+        $(".active-player-info").addClass('bg-blue-team');
+      }
+
+      $(`#active-player-boost-text`).text(activePlayer.boost)
+      $(`#active-player-boost`).width(activePlayer.boost + "%")
+      if (activePlayer.boost >= 3) {
+        $(`#active-player-boost`).css("color", "white")
+      } else {
+        $(`#active-player-boost`).css("color", "black")
+      }
+
+      $("#active-player").removeClass('invisible');
+    } else {
+      $("#active-player").addClass('invisible');
+    }
+
     $('#main-ui').removeClass('invisible');
 
     const gameTime = jEvent.data.game.time_seconds

@@ -23,7 +23,7 @@ Please follow me on YouTube and Twitch
 </head>
 
 <body>
-  <!-- score, time and team names -->
+  <!-- Scoreboard -->
   <div class="scorebox">
     <div class="meta-info">
       <div class="tournament-info">
@@ -32,7 +32,7 @@ Please follow me on YouTube and Twitch
         </div>
         <div class="tournament-info-container">
           <span>GAME <span id='tournament-game-nunmber'>X</span></span>
-          /
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <span>BEST OF <span id='tournament-best-of'>X</span></span>
         </div>
       </div>
@@ -60,7 +60,7 @@ Please follow me on YouTube and Twitch
     </div>
   </div>
 
-  <!-- partial:index.partial.html -->
+  <!-- Player Information -->
   <div class="container-fluid invisible" id="main-ui">
     <div class="row">
       <div class="col m-4">
@@ -160,6 +160,28 @@ Please follow me on YouTube and Twitch
               </div>
             </div>
 
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Active Player -->
+    <div class="active-player" id="active-player">
+      <div class="active-player-info">
+        <div class="row">
+          <div class="col-md-6 spectating">
+            &nbsp;&nbsp;&nbsp;&nbsp;Spectating
+          </div>
+          <div class="col-md-6" id="active-player-name">
+            PLAYER_NAME
+          </div>
+        </div>
+        <div class="progress">
+          <div class="progress-bar bg-dark" role="progressbar" aria-valuemin="0" aria-valuemax="100"
+            id="active-player-boost">
+          </div>
+          <div class="player-boost player-boost-orange">
+            <span class="player-boost-text" id="active-player-boost-text">20</span>
           </div>
         </div>
       </div>
