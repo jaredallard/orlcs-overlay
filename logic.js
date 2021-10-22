@@ -137,7 +137,7 @@ ws.onmessage = (e) => {
             $(`#${team.color}-player-${i + 1}-boost`).text(teamMember.boost)
             $(`#${team.color}-player-${i + 1}-p-bar`).width(teamMember.boost + "%")
 
-            if (teamMember.boost >= 5) {
+            if (teamMember.boost >= 3) {
               $(`#${team.color}-player-${i + 1}-boost`).css("color", "white")
             } else {
               $(`#${team.color}-player-${i + 1}-boost`).css("color", "black")
