@@ -1,12 +1,15 @@
-body{
-  width: 1920px;
-  height: 1080px;
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
 }
 
-.player-box{
-  width: 300px;
-  height: 100px;
+#main-ui {
+  position: fixed;
+  bottom:0;
 }
+
 
 .active-box{
   width: 280px;
@@ -24,12 +27,63 @@ body{
   position: relative;
 }
 
-.player{
+
+/*
+ * Player information contain
+ */
+.player-box{
+  width: 300px;
+  height: auto;
+}
+
+.player {
   position: absolute;
   width: 10px;
   height: 10px;
 }
 
+.player-info {
+  display: flex;
+  align-items: center;
+}
+
+.player-name {
+  margin-left: 10px;
+}
+
+.player-boost {
+  position: absolute;
+  display: flex;
+  align-items: center;
+}
+
+.player-boost-orange {
+  right: 0;
+}
+
+.player-boost-blue {
+  left: 0;
+}
+
+.player-boost-text {
+  font-size: large;
+}
+
+.player-boost-orange .player-boost-text  {
+  margin-right: 10px;
+}
+
+.player-boost-blue .player-boost-text {
+  margin-left: 10px;
+}
+
+.progress {
+  border-radius: 0;
+  height: 30px;
+  position: relative;
+}
+
+/* BG Colors */
 .bg-blue-team{
   background-color: #5E90B5; 
 }
@@ -38,6 +92,66 @@ body{
   background-color: #F4924A; 
 }
 
+/*
+ * All code related to the scorebox component
+ */
 .scorebox {
-   background-image: url('graphics/ingame-bo3.png');
+  margin-left: 25px;
+  margin-top: 25px; 
+  width: 800px;
+  height: auto;
+}
+
+.scorebox .blue-team {
+  background-color: blue;
+}
+
+.scorebox .orange-team {
+  background-color: orange;
+}
+
+.scorebox .blue-team, .scorebox .orange-team {
+  width: 300px;
+}
+
+.scorebox .score {
+  width: 100px;
+  color: black;
+  background-color: white;
+  text-align: center;
+}
+
+.scorebox .timer {
+  width: 100px;
+  color: white;
+  background-color: black;
+  text-align: center;
+}
+
+.scorebox .scorebox-main {
+  background-color: grey;
+  height: auto;
+
+  display: flex;                  /* establish flex container */
+  justify-content: space-between; /* switched from default (flex-start, see below) */
+}
+
+.scorebox .scorebox-main .timer,
+.scorebox .scorebox-main .blue-team, 
+.scorebox .scorebox-main .orange-team {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scorebox .scorebox-main .timer {
+  font-size: x-large;
+}
+
+.scorebox .meta-info {
+  font-size: small;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+
+  width: 100%;
 }
