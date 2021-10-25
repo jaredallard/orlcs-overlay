@@ -1,0 +1,37 @@
+.player-box{
+  width: 300px;
+  height: auto;
+}
+
+.player {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+}
+
+
+/* Player Information */
+.player-box .player-info {
+  position: relative;
+}
+
+.player-box .player-info .player-boost-text-v2 {
+  position: absolute;
+  right: 0;
+  padding-right: 10px;
+}
+
+.player-box .player-info .player-name {
+  position: absolute;
+  padding-left: 10px;
+  left: 0;
+}
+
+/* BG Colors */
+.bg-blue-team{
+  background-color: var(--blue-color); 
+}
+
+.bg-orange-team{
+  background-color: var(--orange-color); 
+}

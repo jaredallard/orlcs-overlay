@@ -1,0 +1,17 @@
+.progress {
+  margin-top: 30px;
+  border-radius: 0;
+  background-color: rgba(0,0,0,0.2);
+  height: 10px;
+  position: relative;
+}
+
+.player-boost {
+  position: absolute;
+  display: flex;
+  align-items: center;
+}
+
+.player-boost-text-v2 {
+  font-size: large;
+}
