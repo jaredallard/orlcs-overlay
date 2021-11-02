@@ -13,25 +13,20 @@ class Scoreboard extends React.Component {
 
   render() {
     return (
-      <div className="scorebox">
-        <div className="meta-info">
-          <div className="tournament-info">
-            <div className="tournament-name-container">
-              <span className="info-title">Outreach Rocket League Championship Series 2021</span>
-            </div>
-            <div className="tournament-info-container">
-              <span>GAME <span id='tournament-game-number'>{this.props.gameInfo.number}</span></span>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <span>BEST OF <span id='tournament-best-of'>{this.props.gameInfo.bestOf}</span></span>
+      <div className="scorebox-container">
+        <div className="scorebox">
+          <div className="meta-info">
+            <div className="tournament-info">
+              <div className="tournament-name-container">
+                <span className="info-title">Outreach Rocket League Championship Series 2021</span>
+              </div>
+              <div className="tournament-info-container">
+                <span>GAME <span id='tournament-game-number'>{this.props.gameInfo.number}</span></span>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span>BEST OF <span id='tournament-best-of'>{this.props.gameInfo.bestOf}</span></span>
+              </div>
             </div>
           </div>
-        </div>
-        {this.props.goal ?
-          <div className="scorebox-main">
-            <div className={`goal-notification bg-${this.props.goal.color}-team`}>
-              <div className="goal-text">GOAL</div>
-            </div>
-          </div> :
           <div className="scorebox-main">
             <img className="logo" alt="ORLCS" src={logo} />
             <div className="blue-team">
@@ -50,10 +45,10 @@ class Scoreboard extends React.Component {
               </div>
             </div>
             <div className="timer">
-              <span id="timer">{this.props.time}</span>
+              <span id="timer">{(this.props.overtime ? '+' : '') + this.props.time}</span>
             </div>
           </div>
-        }
+        </div>
       </div>
     )
   }

@@ -20,9 +20,7 @@ function fmtMSS(s) {   // accepts seconds as Number or String. Returns m:ss
     ) + s;       // and we add Number s to the string (converting it to String as well)
 }
 
-const ws = new W3CWebSocket('ws://192.168.1.48:49122');
-
-let isFirstInit = true;
+const ws = new W3CWebSocket('ws://65.19.132.108:49122');
 
 class Home extends React.Component {
   constructor(props) {
@@ -35,6 +33,7 @@ class Home extends React.Component {
         number: 0,
         bestOf: 0,
       },
+      overtime: false,
       teams: {
         blue: {
           name: '',
@@ -58,7 +57,8 @@ class Home extends React.Component {
     const main = (<div>
       <Scoreboard goal={this.state.animations.goal}
         score={this.state.score} teams={this.state.teams}
-        time={this.state.time} gameInfo={this.state.gameInfo} />
+        time={this.state.time} gameInfo={this.state.gameInfo}
+        overtime={this.state.overtime} />
       <PlayerDisplay players={this.state.players} />
       <ActivePlayer player={this.state.activePlayer} />
     </div>)
@@ -87,6 +87,9 @@ class Home extends React.Component {
     }
 
     ws.onmessage = (event) => {
+      /**
+       * @type {SOSEvent}
+       */
       const jEvent = JSON.parse(event.data);
 
       if (jEvent.event === "game:goal_scored") {
@@ -109,28 +112,24 @@ class Home extends React.Component {
       }
 
       if (jEvent.data.event === "gamestate") {
-        const teamData = jEvent.data.game.teams
+        /**
+         * @type {GameStateEvent}
+         */
+        const gameState = jEvent.data
+        const teamData = gameState.game.teams
+        const overtime = gameState.game.isOT
 
         const blueTeam = teamData[0]
         const orangeTeam = teamData[1]
 
-        // TODO: update when changed
-        if (isFirstInit) {
-          document.documentElement.style.setProperty('--blue-color', '#' + teamData[0].color_primary)
-          document.documentElement.style.setProperty('--orange-color', '#' + teamData[1].color_primary)
-          isFirstInit = false
-        }
-
         // Update the "spectating" block
         let activePlayer = {};
-        if (jEvent.data.game.hasTarget) {
-          const activePlayerName = jEvent.data.game.target;
-          activePlayer = jEvent.data.players[activePlayerName];
+        if (gameState.game.hasTarget) {
+          const activePlayerName = gameState.game.target;
+          activePlayer = gameState.players[activePlayerName];
         }
 
-        // TODO: Handle when game has winner.
-
-        const playerList = jEvent.data.players;
+        const playerList = gameState.players;
         const team0 = _.filter(playerList, {
           'team': 0
         })
@@ -138,7 +137,7 @@ class Home extends React.Component {
           'team': 1
         })
 
-        const time = fmtMSS(jEvent.data.game.time_seconds)
+        const time = fmtMSS(gameState.game.time_seconds)
         const teams = {
           blue: { name: blueTeam.name },
           orange: { name: orangeTeam.name }
@@ -147,9 +146,17 @@ class Home extends React.Component {
           blue: blueTeam.score,
           orange: orangeTeam.score,
         }
-        const players = _.concat(_.map(team0, (p) => { p.color = 'blue'; return p }), _.map(team1, (p) => { p.color = 'orange'; return p }))
+        const players = _.concat(_.map(team0, p => {
+          p.color = 'blue'
+          p.name = String(p.name).toUpperCase();
+          return p
+        }), _.map(team1, p => {
+          p.color = 'orange'
+          p.name = String(p.name).toUpperCase();
+          return p
+        }))
 
-        this.setState({ time, teams, score, players, activePlayer })
+        this.setState({ time, teams, score, players, activePlayer, overtime })
       }
 
       if (jEvent.event === "game:match_ended" || jEvent.event === "game:match_destroyed") {
@@ -159,7 +166,7 @@ class Home extends React.Component {
         return
       }
 
-      if (jEvent.event === "game:match_created" || jEvent.event === "game:round_started_go") {
+      if (jEvent.event === "game:round_started_go") {
         this.setState({
           enabled: true,
         })

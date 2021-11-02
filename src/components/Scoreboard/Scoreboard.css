@@ -1,6 +1,10 @@
+.scorebox-container {
+  display: flex;
+  justify-content: center;
+}
+
 .scorebox {
   margin-left: 25px;
-  margin-top: 25px; 
   width: 1000px;
   height: 100px;
 }
@@ -76,7 +80,7 @@
 .scorebox .meta-info {
   font-size: small;
   font-weight: bold;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: var(--background-transparency-color);
   color: white;
 
   width: 100%;

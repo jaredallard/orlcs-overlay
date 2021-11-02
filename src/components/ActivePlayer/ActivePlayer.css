@@ -1,18 +1,49 @@
-.active-player {
+.active-player-container {
   position: fixed;
-  bottom: 30px;
-
+  bottom: 0px;
   width: 100%;
-
-  /* this is what centers your element in the fixed wrapper*/
-  display: flex;
-  justify-content: center; /* aligns on vertical for column */
-  align-items: center; /* aligns on horizontal for column */
+  height: auto;
 }
 
-.active-player-info {
-  height: 35px;
-  width: 230px;
+.active-player {
+  height: 50px;
+  width: 50%;
+  background-color: var(--background-transparency-color);
+  color: #FFFFFF;
+}
+
+.active-player .player-info {
+  height: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.active-player .player-info .player-name {
+  font-size: 1.4em;
+  font-weight: bold;
+  padding-left: 20px;
+  min-width: 200px;
+}
+
+.active-player .player-info .player-metric-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.active-player .player-info .player-metric-container .player-metric-name {
+  padding-left: 5px;
+  color: rgb(158, 158, 158);
+  text-transform: uppercase;
+  padding-right: 20px;
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+.active-player .player-info .player-metric-container .player-metric-value {
+font-size: 1.4em;
+font-weight: bold;
 }
 
 .active-player-info .spectating {

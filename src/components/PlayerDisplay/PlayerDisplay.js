@@ -23,7 +23,7 @@ class PlayerDisplay extends react.Component {
     return (
       <div className="container-fluid playerdisplay">
         <div className="row">
-          <div className="col m-4">
+          <div className="col m-0-4">
             <div className="h-100 d-flex align-items-start flex-column">
               <div className="mt-3">
                 {bluePlayers}
@@ -31,7 +31,7 @@ class PlayerDisplay extends react.Component {
             </div>
           </div>
 
-          <div className="col m-4">
+          <div className="col m-0-4">
             <div className="h-100 d-flex align-items-end flex-column">
               <div className="mt-3">
                 {orangePlayers}
