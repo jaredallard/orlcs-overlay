@@ -5,6 +5,7 @@ import _ from 'lodash';
 import PlayerDisplay from '../../components/PlayerDisplay/PlayerDisplay';
 import Scoreboard from '../../components/Scoreboard/Scoreboard';
 import ActivePlayer from '../../components/ActivePlayer/ActivePlayer';
+import Replay from '../../components/Replay/Replay';
 
 function fmtMSS(s) {   // accepts seconds as Number or String. Returns m:ss
   return (s -         // take value s and subtract (will try to convert String to Number)
@@ -34,6 +35,7 @@ class Home extends React.Component {
         bestOf: 0,
       },
       overtime: false,
+      replay: false,
       teams: {
         blue: {
           name: '',
@@ -46,7 +48,11 @@ class Home extends React.Component {
         blue: 4,
         orange: 2,
       },
-
+      lastGoal: {
+        assister: {},
+        scorer: {},
+        speed: 0,
+      },
       enabled: true,
       animations: {
         goal: false,
@@ -60,7 +66,11 @@ class Home extends React.Component {
         time={this.state.time} gameInfo={this.state.gameInfo}
         overtime={this.state.overtime} />
       <PlayerDisplay players={this.state.players} />
-      <ActivePlayer player={this.state.activePlayer} />
+      {this.state.replay ?
+        <Replay assister_name={this.state.lastGoal.assister.name} scorer_name={this.state.lastGoal.scorer.name} speed={this.state.lastGoal.speed} />
+        :
+        <ActivePlayer player={this.state.activePlayer} />
+      }
     </div>)
 
     return this.state.enabled ? main : (<div />)
@@ -93,21 +103,15 @@ class Home extends React.Component {
       const jEvent = JSON.parse(event.data);
 
       if (jEvent.event === "game:goal_scored") {
-        this.setState({
-          animations: {
-            goal: {
-              color: jEvent.data.scorer.teamnum === 0 ? 'blue' : 'orange',
-            }
-          }
-        })
-
-        setTimeout(() => {
+        if (!this.state.replay) {
           this.setState({
-            animations: {
-              goal: false,
+            lastGoal: {
+              assister: jEvent.data.assister,
+              scorer: jEvent.data.scorer,
+              speed: jEvent.data.goalspeed,
             }
           })
-        }, 5000)
+        }
         return
       }
 
@@ -118,6 +122,7 @@ class Home extends React.Component {
         const gameState = jEvent.data
         const teamData = gameState.game.teams
         const overtime = gameState.game.isOT
+        const replay = gameState.game.isReplay
 
         const blueTeam = teamData[0]
         const orangeTeam = teamData[1]
@@ -156,7 +161,8 @@ class Home extends React.Component {
           return p
         }))
 
-        this.setState({ time, teams, score, players, activePlayer, overtime })
+        this.setState({ time, teams, score, players, activePlayer, overtime, replay })
+        return
       }
 
       if (jEvent.event === "game:match_ended" || jEvent.event === "game:match_destroyed") {
