@@ -21,7 +21,7 @@ function fmtMSS(s) {   // accepts seconds as Number or String. Returns m:ss
     ) + s;       // and we add Number s to the string (converting it to String as well)
 }
 
-const ws = new W3CWebSocket('ws://65.19.132.108:49122');
+const ws = new W3CWebSocket('ws://localhost:49122');
 
 class Home extends React.Component {
   constructor(props) {
@@ -53,7 +53,7 @@ class Home extends React.Component {
         scorer: {},
         speed: 0,
       },
-      enabled: true,
+      enabled: false,
       animations: {
         goal: false,
       }
@@ -77,6 +77,29 @@ class Home extends React.Component {
   }
 
   async componentDidMount() {
+    // start watcher from controller.js
+    window.setInterval(async () => {
+      try {
+        const body = await (await fetch('http://localhost:3333/')).json()
+        this.setState({
+          teams: {
+            blue: {
+              name: body.blue,
+            },
+            orange: {
+              name: body.orange,
+            },
+          },
+          gameInfo: {
+            number: body.game,
+            bestOf: body.bestOf || 3,
+          },
+          enabled: body.enabled,
+        })
+      } catch (err) {
+        console.error("failed to ping controller", err)
+      }
+    }, 500)
     window.onload = () => {
       const urlParams = new URLSearchParams(window.location.search);
       this.setState({
@@ -143,10 +166,6 @@ class Home extends React.Component {
         })
 
         const time = fmtMSS(gameState.game.time_seconds)
-        const teams = {
-          blue: { name: blueTeam.name },
-          orange: { name: orangeTeam.name }
-        }
         const score = {
           blue: blueTeam.score,
           orange: orangeTeam.score,
@@ -161,7 +180,7 @@ class Home extends React.Component {
           return p
         }))
 
-        this.setState({ time, teams, score, players, activePlayer, overtime, replay })
+        this.setState({ time, score, players, activePlayer, overtime, replay })
         return
       }
 

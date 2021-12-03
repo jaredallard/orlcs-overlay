@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "cors": "^2.8.5",
     "husky": "^7.0.4",
     "jquery": "^3.6.0",
     "lint-staged": "^11.2.6",
