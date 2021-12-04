@@ -100,16 +100,6 @@ class Home extends React.Component {
         console.error("failed to ping controller", err)
       }
     }, 500)
-    window.onload = () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      this.setState({
-        gameInfo: {
-          number: urlParams.get('gameNum') || 1,
-          bestOf: urlParams.get('bestOf') || 3,
-        },
-      })
-      return
-    }
 
     ws.onopen = () => {
       console.log("created websocket client")
