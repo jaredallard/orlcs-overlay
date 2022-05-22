@@ -37,6 +37,10 @@ NOTE: See `state.example.json` for the format
 
 This is then polled by the web component every 1000ms. Eventually I'll make this better, but I needed a quick way to do this.
 
+## Controller
+
+A controller is accessible via http://localhost:3000/controller, this allows you to start games and modify the current dashboard. Games are loaded from `games.json` on startup.
+
 ### Changing the logo
 
 Replace `logo.svg` in `src/` with something else. If you want to use a non svg you'll want to update the import path as well (grep for `logo.svg`)

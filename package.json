@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "bootstrap": "5.2.0-beta1",
     "cors": "^2.8.5",
+    "fontawesome-free": "^1.0.4",
     "husky": "^7.0.4",
     "jquery": "^3.6.0",
     "lint-staged": "^11.2.6",
@@ -15,7 +17,7 @@
     "websocket": "^1.0.34"
   },
   "devDependencies": {
-    "react-scripts": "4.0.3"
+    "react-scripts": "5.0.1"
   },
   "scripts": {
     "start": "cd src; node controller.js & cd ../; react-scripts start",
