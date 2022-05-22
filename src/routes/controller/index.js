@@ -42,7 +42,7 @@ class Controller extends React.Component {
         <h1>Active Game</h1>
         <br />
         <pre>{JSON.stringify(this.state.state)}</pre>
-        <br /><br />
+        <br />
 
         <button type="button" className="btn btn-success" onClick={this.enable}>
           Enable Overlay
@@ -56,7 +56,7 @@ class Controller extends React.Component {
           Game: +1
         </button>
         <hr />
-        <br /><br /><br /><br /><br /><br />
+        <br />
       </div>
       <div className="games">
         {entries}

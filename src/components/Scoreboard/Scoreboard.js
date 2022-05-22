@@ -6,7 +6,6 @@
  */
 
 import React from 'react';
-import logo from './logo.png';
 import './Scoreboard.css';
 
 class Scoreboard extends React.Component {
@@ -18,7 +17,7 @@ class Scoreboard extends React.Component {
           <div className="meta-info">
             <div className="tournament-info">
               <div className="tournament-name-container">
-                <span className="info-title">Outreach Rocket League Championship Series 2021</span>
+                <span className="info-title">Outreach Rocket League Championship Series {new Date().getFullYear()}</span>
               </div>
               <div className="tournament-info-container">
                 <span>GAME <span id='tournament-game-number'>{this.props.gameInfo.number}</span></span>
@@ -28,7 +27,6 @@ class Scoreboard extends React.Component {
             </div>
           </div>
           <div className="scorebox-main">
-            <img className="logo" alt="ORLCS" src={logo} />
             <div className="blue-team">
               <div className="team-name">
                 {this.props.teams.blue.name}
@@ -36,16 +34,17 @@ class Scoreboard extends React.Component {
             </div>
             <div className="score">
               <span className="display-6">{this.props.score.blue}</span>
-              <span className="display-6">-</span>
+            </div>
+            <div className="timer">
+              <span id="timer">{(this.props.overtime ? '+' : '') + this.props.time}</span>
+            </div>
+            <div className="score">
               <span className="display-6">{this.props.score.orange}</span>
             </div>
             <div className="orange-team">
               <div className="team-name">
                 {this.props.teams.orange.name}
               </div>
-            </div>
-            <div className="timer">
-              <span id="timer">{(this.props.overtime ? '+' : '') + this.props.time}</span>
             </div>
           </div>
         </div>
